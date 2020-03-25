@@ -31,7 +31,6 @@ public class Reader {
                 readPARA(smb,line);
             }
         }
-
     }
 
     private void  readVAR(BufferedReader smb, String line){
