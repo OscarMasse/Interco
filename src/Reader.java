@@ -48,6 +48,7 @@ public class Reader {
         BufferedReader smb = new BufferedReader(new FileReader(this.path));
         String line = smb.readLine();
         while (line != null){
+            line = discardComments(line);
             if (line.contains("VAR")) {
                 line = smb.readLine();
                 line = readVAR(smb, line);
@@ -63,7 +64,7 @@ public class Reader {
         }
     }
 
-    private String lineWithoutComments(String line) {
+    private String discardComments(String line) {
         if (line.contains("#")) {
             return line.split("#")[0];
         }
@@ -85,7 +86,7 @@ public class Reader {
         String[] split;
         List<String> var = new ArrayList<>();
         while (!containsKeyWord(line)) {
-            line = lineWithoutComments(line);
+            line = discardComments(line);
             if (!line.isEmpty()) {
                 line = line.replaceAll("=", "");
                 line = line.replaceAll(";", "");
@@ -113,7 +114,7 @@ public class Reader {
         String[] split;
         List<String> reg = new ArrayList<>();
         while (!containsKeyWord(line)) {
-            line = lineWithoutComments(line);
+            line = discardComments(line);
             if (!line.isEmpty()) {
                 line = line.replaceAll("=>", "");
                 line = line.replaceAll(";", "");
@@ -142,7 +143,7 @@ public class Reader {
         String[] split;
         List<String> para = new ArrayList<>();
         while (!containsKeyWord(line)) {
-            line = lineWithoutComments(line);
+            line = discardComments(line);
             if (!line.isEmpty()) {
                 line = line.replaceAll("=", "");
                 line = line.replaceAll(";", "");
@@ -171,9 +172,6 @@ public class Reader {
             System.out.println(entry.getKey() + " : " + entry.getValue());
         }
     }
-
-
-
 
     void createAutomataStates(Automata automata, int b_v) {
 
