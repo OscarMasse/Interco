@@ -36,7 +36,7 @@ public class Reader {
         }
     }
 
-    private Map<String, List<String>> readSMB;
+    private Map<String, List<List<String>>> readSMB;
 
     Reader(String path) {
         this.path = path;
@@ -84,9 +84,11 @@ public class Reader {
     // VAR format : var = 0..2 ;
     private String readVAR(BufferedReader smb, String line) {
         String[] split;
-        List<String> var = new ArrayList<>();
+        List<List<String>> var = new ArrayList<>();
+        List<String> vari = new ArrayList<>();
         while (!containsKeyWord(line)) {
             line = discardComments(line);
+            vari = new ArrayList<>();
             if (!line.isEmpty()) {
                 line = line.replaceAll("=", "");
                 line = line.replaceAll(";", "");
@@ -96,9 +98,9 @@ public class Reader {
 //                    System.out.println(a);
 //                }
                 for (int i = 0; i < split.length; i++) {
-                    var.add(split[i]);
+                    vari.add(split[i]);
                 }
-                this.readSMB.put("VAR", var);
+                var.add(vari);
             }
             try {
                 line = smb.readLine();
@@ -106,15 +108,18 @@ public class Reader {
                 e.printStackTrace();
             }
         }
+        this.readSMB.put("VAR", var);
         return line;
     }
 
     // REG format : reg [cond] => var ;
     private String readREG(BufferedReader smb, String line) {
         String[] split;
-        List<String> reg = new ArrayList<>();
+        List<List<String>> reg = new ArrayList<>();
+        List<String> regi = new ArrayList<>();
         while (!containsKeyWord(line)) {
             line = discardComments(line);
+            regi = new ArrayList<>();
             if (!line.isEmpty()) {
                 line = line.replaceAll("=>", "");
                 line = line.replaceAll(";", "");
@@ -125,9 +130,9 @@ public class Reader {
 //                    System.out.println(a);
 //                }
                 for (int i = 0; i < split.length; i++) {
-                    reg.add(split[i]);
+                    regi.add(split[i]);
                 }
-                this.readSMB.put("REG", reg);
+                reg.add(regi);
             }
             try {
                 line = smb.readLine();
@@ -135,15 +140,18 @@ public class Reader {
                 e.printStackTrace();
             }
         }
+        this.readSMB.put("REG", reg);
         return line;
     }
 
     // PARA format : k = 0..1 ;
     private String readPARA(BufferedReader smb, String line) {
         String[] split;
-        List<String> para = new ArrayList<>();
+        List<List<String>> para = new ArrayList<>();
+        List<String> parai = new ArrayList<>();
         while (!containsKeyWord(line)) {
             line = discardComments(line);
+            parai = new ArrayList<>();
             if (!line.isEmpty()) {
                 line = line.replaceAll("=", "");
                 line = line.replaceAll(";", "");
@@ -153,22 +161,24 @@ public class Reader {
 //                    System.out.println(a);
 //                }
                 for (int i = 0; i < split.length; i++) {
-                    para.add(split[i]);
+                    parai.add(split[i]);
                 }
-                this.readSMB.put("PARA", para);
+                para.add(parai);
             }
             try {
                 line = smb.readLine();
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            this.readSMB.put("PARA", para);
         }
+
         return line;
     }
 
     public void display() {
         System.out.println("Displaying readSMB Map:");
-        for (Map.Entry<String, List<String>> entry : readSMB.entrySet()) {
+        for (Map.Entry<String, List<List<String>>> entry : readSMB.entrySet()) {
             System.out.println(entry.getKey() + " : " + entry.getValue());
         }
     }
