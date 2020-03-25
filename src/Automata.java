@@ -5,12 +5,19 @@ import java.util.Map;
 
 public class Automata {
 
+    private String name;
     private int nStates;
     private List<LocalState> localStates;
     private List<String> var;
 
     public Automata(List<String> var) {
         this.var = var;
+    }
+
+    public Automata(String name, int nStates) {
+        this.name = name;
+        this.nStates = nStates;
+        this.localStates = new ArrayList<>();
     }
 
     public Automata(int nStates) {
@@ -21,17 +28,16 @@ public class Automata {
         }
     }
 
-    public int b_v() {
-        return nStates + 1;
-    }
-
     class LocalState {
         public Map<LocalState, List<LocalState>> transitions;
-        public Map<LocalState, List<LocalState>> negTransitions;
 
         LocalState() {
             this.transitions = new HashMap<>();
-            this.negTransitions = new HashMap<>();
         }
+    }
+
+    class Transition {
+        LocalState origin, destination;
+        List<LocalState> conditions;
     }
 }

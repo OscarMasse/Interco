@@ -12,6 +12,10 @@ public class Reader {
     private String path;
     private File file;
 
+    public Map<String, List<List<String>>> getRead() {
+        return readSMB;
+    }
+
     private enum KeyWords {
         VAR("VAR"),
         REG("REG"),
@@ -177,7 +181,6 @@ public class Reader {
     }
 
     public void display() {
-        System.out.println("Displaying readSMB Map:");
         for (Map.Entry<String, List<List<String>>> entry : readSMB.entrySet()) {
             System.out.println(entry.getKey() + " : " + entry.getValue());
         }
