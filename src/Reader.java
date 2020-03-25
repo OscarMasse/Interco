@@ -14,8 +14,6 @@ public class Reader {
 
     private Map<String, List<String>> readSMB;
 
-    ;
-
     Reader(String path) {
         this.path = path;
         this.file = new File(path);
@@ -135,7 +133,7 @@ public class Reader {
         return line;
     }
 
-    public void dislay() {
+    public void display() {
         System.out.println("Displaying readSMB Map:");
         for (Map.Entry<String, List<String>> entry : readSMB.entrySet()) {
             System.out.println(entry.getKey() + " : " + entry.getValue());
