@@ -12,12 +12,30 @@ public class Reader {
     private String path;
     private File file;
 
-    private String lineWithoutComments(String line) {
-        if (line.contains("#")) {
-            return line.split("#")[0];
+    private enum KeyWords {
+        VAR("VAR"),
+        REG("REG"),
+        PARA("PARA"),
+        CTL("CTL"),
+        FAIRCTL("FAIRCTL"),
+        HOARE("HOARE"),
+        PRE("PRE"),
+        TRACE("TRACE"),
+        POST("POST"),
+        END("END");
+
+        private String keyWord;
+
+        KeyWords(final String keyWord) {
+            this.keyWord = keyWord;
         }
-        return line;
+
+        @Override
+        public String toString() {
+            return keyWord;
+        }
     }
+
     private Map<String, List<String>> readSMB;
 
     Reader(String path) {
@@ -43,6 +61,23 @@ public class Reader {
                 line = smb.readLine();
             }
         }
+    }
+
+    private String lineWithoutComments(String line) {
+        if (line.contains("#")) {
+            return line.split("#")[0];
+        }
+        return line;
+    }
+
+    private boolean containsKeyWord(String line) {
+        boolean contains = false;
+        for (KeyWords keyWord : KeyWords.values()) {
+            if (line.contains(keyWord.toString())) {
+                contains = true;
+            }
+        }
+        return contains;
     }
 
     // VAR format : var = 0..2 ;
@@ -71,16 +106,6 @@ public class Reader {
             }
         }
         return line;
-    }
-
-    private boolean containsKeyWord(String line) {
-        boolean contains = false;
-        for (KeyWords keyWord : KeyWords.values()) {
-            if (line.contains(keyWord.toString())) {
-                contains = true;
-            }
-        }
-        return contains;
     }
 
     // REG format : reg [cond] => var ;
@@ -147,29 +172,7 @@ public class Reader {
         }
     }
 
-    private enum KeyWords {
-        VAR("VAR"),
-        REG("REG"),
-        PARA("PARA"),
-        CTL("CTL"),
-        FAIRCTL("FAIRCTL"),
-        HOARE("HOARE"),
-        PRE("PRE"),
-        TRACE("TRACE"),
-        POST("POST"),
-        END("END");
 
-        private String keyWord;
-
-        KeyWords(final String keyWord) {
-            this.keyWord = keyWord;
-        }
-
-        @Override
-        public String toString() {
-            return keyWord;
-        }
-    }
 
 
     void createAutomataStates(Automata automata, int b_v) {
