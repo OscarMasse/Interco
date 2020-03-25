@@ -4,6 +4,6 @@ public class Main {
     public static void main(String[] args) throws IOException {
         Reader smb = new Reader("circadianCTL.smb");
         smb.read();
-        System.out.println(smb);
+        smb.dislay();
     }
 }

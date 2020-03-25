@@ -36,11 +36,7 @@ public class Reader {
                 line = smb.readLine();
                 line = readPARA(smb, line);
             } else {
-                try {
-                    line = smb.readLine();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                line = smb.readLine();
             }
         }
     }
@@ -62,7 +58,7 @@ public class Reader {
         List<String> var = new ArrayList<>();
 
         while (!containsKeyWord(line)) {
-            if (!line.replaceAll("\\s+", "").equals("\n") && !line.contains("#")) {
+            if (!line.contains("#") && !line.isEmpty()) {
                 line = line.replaceAll("=", "");
                 line = line.replaceAll(";", "");
                 line = line.replaceAll("\\.\\.", " ");
@@ -89,7 +85,7 @@ public class Reader {
         String[] split;
         List<String> reg = new ArrayList<>();
         while (!containsKeyWord(line)) {
-            if (!line.replaceAll("\\s+", "").equals("\n") && !line.contains("#")) {
+            if (!line.replaceAll("\\s+", "").equals("\n") && !line.contains("#") && !line.isEmpty()) {
                 line = line.replaceAll("=>", "");
                 line = line.replaceAll(";", "");
                 line = line.replaceAll("\\[", "");
@@ -117,7 +113,7 @@ public class Reader {
         String[] split;
         List<String> para = new ArrayList<>();
         while (!containsKeyWord(line)) {
-            if (!line.replaceAll("\\s+", "").equals("\n") && !line.contains("#")) {
+            if (!line.contains("#") && !line.isEmpty()) {
                 line = line.replaceAll("=", "");
                 line = line.replaceAll(";", "");
                 line = line.replaceAll("\\.\\.", " ");
@@ -137,6 +133,13 @@ public class Reader {
             }
         }
         return line;
+    }
+
+    public void dislay() {
+        System.out.println("Displaying readSMB Map:");
+        for (Map.Entry<String, List<String>> entry : readSMB.entrySet()) {
+            System.out.println(entry.getKey() + " : " + entry.getValue());
+        }
     }
 
     private enum KeyWords {
