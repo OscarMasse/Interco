@@ -12,7 +12,7 @@ public class Reader {
     private String path;
     private File file;
 
-    public String lineWithoutComments(String line) {
+    private String lineWithoutComments(String line) {
         if (line.contains("#")) {
             return line.split("#")[0];
         }
