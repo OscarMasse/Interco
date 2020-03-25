@@ -1,0 +1,53 @@
+#*****************************
+# .smb file generated from yEd file examples/circadian/circadian.graphml
+#*****************************
+
+# from chapter : "Méthodes de vérification formelle pour la modélisation en biologie: le cas des réseaux de régulation biologique, Gilles BERNOT, Hélène COLLAVIZZA, Jean-Paul COMET, in "Approches symboliques de la modélisation et de l’analyse des systèmes biologiques" to appear, ISTE.
+
+VAR
+
+# Generated domains are 0..d+(x) where d+(x) is the outgoing degree of x
+
+ClockGenes = 0..1 ;
+PerCry = 0..1 ;
+Light = 0..2 ;
+
+REG
+
+PC_on_G [!(PerCry>=1&!(Light>=1))] =>  ClockGenes  ; 
+
+ClockGenes_To_PerCry [(ClockGenes>=1)] => PerCry ; 
+
+Light_To_Light [!(Light>=1)] => Light ; 
+
+# end of graph generated from Yed
+
+PARA
+
+# Parameters for ClockGenes
+
+K_ClockGenes = 0..1;
+K_ClockGenes:PC_on_G = 0..1;
+
+# Parameters for PerCry
+
+K_PerCry = 0..1;
+K_PerCry:ClockGenes_To_PerCry = 0..1;
+
+# Parameters for Light
+
+K_Light = 0..2;
+K_Light:Light_To_Light = 0..2;
+
+CTL
+
+# starting from any state such as PerCry = 1 with the light on PerCry complex will always remain present, whatever the path chosen.
+(PerCry = 1 & Light = 1) -> AF (AG(PerCry = 1));
+
+FAIRCTL
+# if turn the light on at any point without ever turning it off, so the genes of the clock will end up expressing itself constantly
+# a sufficient condition to this formula is that
+# K_ClockGenes:PC_on_G = 1
+AF (AG(Light = 1)) -> AF (AG( ClockGenes= 1));
+
+END

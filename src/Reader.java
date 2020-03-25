@@ -62,7 +62,7 @@ public class Reader {
         List<String> var = new ArrayList<>();
 
         while (!containsKeyWord(line)) {
-            if (!line.replaceAll("\\s+", "").equals("\n")) {
+            if (!line.replaceAll("\\s+", "").equals("\n") && !line.contains("#")) {
                 line = line.replaceAll("=", "");
                 line = line.replaceAll(";", "");
                 line = line.replaceAll("\\.\\.", " ");
@@ -89,7 +89,7 @@ public class Reader {
         String[] split;
         List<String> reg = new ArrayList<>();
         while (!containsKeyWord(line)) {
-            if (!line.replaceAll("\\s+", "").equals("\n")) {
+            if (!line.replaceAll("\\s+", "").equals("\n") && !line.contains("#")) {
                 line = line.replaceAll("=>", "");
                 line = line.replaceAll(";", "");
                 line = line.replaceAll("\\[", "");
@@ -117,7 +117,7 @@ public class Reader {
         String[] split;
         List<String> para = new ArrayList<>();
         while (!containsKeyWord(line)) {
-            if (!line.replaceAll("\\s+", "").equals("\n")) {
+            if (!line.replaceAll("\\s+", "").equals("\n") && !line.contains("#")) {
                 line = line.replaceAll("=", "");
                 line = line.replaceAll(";", "");
                 line = line.replaceAll("\\.\\.", " ");
@@ -161,5 +161,22 @@ public class Reader {
         public String toString() {
             return keyWord;
         }
+    }
+
+    void createAutomataStates(Automata automata, int b_v) {
+
+    }
+
+    List<Integer> initializeAutomataStates(List<Integer> statesVariables) {
+        List<Integer> S0 = new ArrayList<>();
+        for (Integer i :
+                statesVariables) {
+            S0.add(i);
+        }
+        return S0;
+    }
+
+    void createOmega(Automata automata, List<List<Integer>> Em) {
+
     }
 }
