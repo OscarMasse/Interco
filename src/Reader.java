@@ -84,16 +84,16 @@ public class Reader {
     private String readVAR(BufferedReader smb, String line) {
         String[] split;
         List<String> var = new ArrayList<>();
-        line = lineWithoutComments(line);
         while (!containsKeyWord(line)) {
+            line = lineWithoutComments(line);
             if (!line.isEmpty()) {
                 line = line.replaceAll("=", "");
                 line = line.replaceAll(";", "");
                 line = line.replaceAll("\\.\\.", " ");
                 split = line.split("\\s+");
-                for (String a : split) {
-                    System.out.println(a);
-                }
+//                for (String a : split) {
+//                    System.out.println(a);
+//                }
                 for (int i = 0; i < split.length; i++) {
                     var.add(split[i]);
                 }
@@ -112,17 +112,17 @@ public class Reader {
     private String readREG(BufferedReader smb, String line) {
         String[] split;
         List<String> reg = new ArrayList<>();
-        line = lineWithoutComments(line);
         while (!containsKeyWord(line)) {
+            line = lineWithoutComments(line);
             if (!line.isEmpty()) {
                 line = line.replaceAll("=>", "");
                 line = line.replaceAll(";", "");
                 line = line.replaceAll("\\[", "");
                 line = line.replaceAll("]", "");
                 split = line.split("\\s+");
-                for (String a : split) {
-                    System.out.println(a);
-                }
+//                for (String a : split) {
+//                    System.out.println(a);
+//                }
                 for (int i = 0; i < split.length; i++) {
                     reg.add(split[i]);
                 }
@@ -141,16 +141,16 @@ public class Reader {
     private String readPARA(BufferedReader smb, String line) {
         String[] split;
         List<String> para = new ArrayList<>();
-        line = lineWithoutComments(line);
         while (!containsKeyWord(line)) {
+            line = lineWithoutComments(line);
             if (!line.isEmpty()) {
                 line = line.replaceAll("=", "");
                 line = line.replaceAll(";", "");
                 line = line.replaceAll("\\.\\.", " ");
                 split = line.split("\\s+");
-                for (String a : split) {
-                    System.out.println(a);
-                }
+//                for (String a : split) {
+//                    System.out.println(a);
+//                }
                 for (int i = 0; i < split.length; i++) {
                     para.add(split[i]);
                 }
