@@ -12,9 +12,13 @@ public class Reader {
     private String path;
     private File file;
 
+    public String lineWithoutComments(String line) {
+        if (line.contains("#")) {
+            return line.split("#")[0];
+        }
+        return line;
+    }
     private Map<String, List<String>> readSMB;
-
-    ;
 
     Reader(String path) {
         this.path = path;
@@ -41,24 +45,13 @@ public class Reader {
         }
     }
 
-    private boolean containsKeyWord(String line) {
-        boolean contains = false;
-        for (KeyWords keyWord : KeyWords.values()) {
-            if (line.contains(keyWord.toString())) {
-                contains = true;
-            }
-        }
-        return contains;
-    }
-
     // VAR format : var = 0..2 ;
-    // NO COMMENTS IN VAR
     private String readVAR(BufferedReader smb, String line) {
         String[] split;
         List<String> var = new ArrayList<>();
-
+        line = lineWithoutComments(line);
         while (!containsKeyWord(line)) {
-            if (!line.contains("#") && !line.isEmpty()) {
+            if (!line.isEmpty()) {
                 line = line.replaceAll("=", "");
                 line = line.replaceAll(";", "");
                 line = line.replaceAll("\\.\\.", " ");
@@ -80,12 +73,23 @@ public class Reader {
         return line;
     }
 
+    private boolean containsKeyWord(String line) {
+        boolean contains = false;
+        for (KeyWords keyWord : KeyWords.values()) {
+            if (line.contains(keyWord.toString())) {
+                contains = true;
+            }
+        }
+        return contains;
+    }
+
     // REG format : reg [cond] => var ;
     private String readREG(BufferedReader smb, String line) {
         String[] split;
         List<String> reg = new ArrayList<>();
+        line = lineWithoutComments(line);
         while (!containsKeyWord(line)) {
-            if (!line.replaceAll("\\s+", "").equals("\n") && !line.contains("#") && !line.isEmpty()) {
+            if (!line.isEmpty()) {
                 line = line.replaceAll("=>", "");
                 line = line.replaceAll(";", "");
                 line = line.replaceAll("\\[", "");
@@ -112,8 +116,9 @@ public class Reader {
     private String readPARA(BufferedReader smb, String line) {
         String[] split;
         List<String> para = new ArrayList<>();
+        line = lineWithoutComments(line);
         while (!containsKeyWord(line)) {
-            if (!line.contains("#") && !line.isEmpty()) {
+            if (!line.isEmpty()) {
                 line = line.replaceAll("=", "");
                 line = line.replaceAll(";", "");
                 line = line.replaceAll("\\.\\.", " ");
@@ -135,7 +140,7 @@ public class Reader {
         return line;
     }
 
-    public void dislay() {
+    public void display() {
         System.out.println("Displaying readSMB Map:");
         for (Map.Entry<String, List<String>> entry : readSMB.entrySet()) {
             System.out.println(entry.getKey() + " : " + entry.getValue());
@@ -165,6 +170,7 @@ public class Reader {
             return keyWord;
         }
     }
+
 
     void createAutomataStates(Automata automata, int b_v) {
 
