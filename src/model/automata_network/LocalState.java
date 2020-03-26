@@ -8,17 +8,22 @@ public class LocalState {
     private int index;
     private String automataName;
 
+    LocalState(int index, String name) {
+        this.transitions = new ArrayList<>();
+        this.index = index;
+        this.automataName = name;
+    }
+
+    public void setTransitions(List<Transition> transitions) {
+        this.transitions = transitions;
+    }
+
     public List<Transition> getTransitions() {
         return transitions;
     }
 
     public String getAutomataName() {
         return automataName;
-    }
-
-    LocalState(int index) {
-        this.transitions = new ArrayList<>();
-        this.index = index;
     }
 
     public int getIndex() {

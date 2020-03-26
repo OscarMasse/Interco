@@ -9,6 +9,13 @@ public class Variable {
     List<List<String>> omega;
     List<String> beta;
 
+    Variable(String name, int b_v) {
+        this.name = name;
+        this.b_v = b_v;
+        this.omega = new ArrayList<>();
+        this.beta = new ArrayList<>();
+    }
+
     public List<List<String>> getOmega() {
         return omega;
     }
@@ -41,12 +48,5 @@ public class Variable {
             i--;
         }
         return negStates;
-    }
-
-    Variable(String name, int b_v) {
-        this.name = name;
-        this.b_v = b_v;
-        this.omega = new ArrayList<>();
-        this.beta = new ArrayList<>();
     }
 }

@@ -9,6 +9,15 @@ public class Automata {
     private int nStates;
     private List<LocalState> localStates;
 
+    public Automata(String name, int b_v) {
+        this.name = name;
+        this.nStates = b_v;
+        this.localStates = new ArrayList<>();
+        for (int i = 0; i <= nStates; i++) {
+            this.localStates.add(new LocalState(i, this.name));
+        }
+    }
+
     public String getName() {
         return name;
     }
@@ -19,23 +28,6 @@ public class Automata {
 
     public List<LocalState> getLocalStates() {
         return localStates;
-    }
-
-    public Automata(String name, int b_v) {
-        this.name = name;
-        this.nStates = b_v;
-        this.localStates = new ArrayList<>();
-        for (int i = 0; i < nStates; i++) {
-            this.localStates.add(new LocalState(i));
-        }
-    }
-
-    public Automata(int nStates) {
-        this.nStates = nStates;
-        this.localStates = new ArrayList<>();
-        for (int i = 0; i < nStates; i++) {
-            this.localStates.add(new LocalState(i));
-        }
     }
 
     public LocalState getLocalState(int i) {

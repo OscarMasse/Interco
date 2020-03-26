@@ -52,7 +52,7 @@ public class Translator {
         s0 = new ArrayList<>();
         // Automatas initialized at 0 because we don't have η0
         for (Automata automata : automatas) {
-            s0.add(automata.getLocalStates(0));
+            s0.add(automata.getLocalState(0));
         }
     }
 
