@@ -10,7 +10,7 @@ public class RegulatoryGraph {
     private List<Variable> outputs;
 
     private List<Pair<String, Variable>> em; // Multiplexes + Output
-    private List<Trouple<Variable, Integer, String>> ev; // Multiplexes + Inputs
+    private List<Trouple<Object, Integer, String>> ev; // Multiplexes + Inputs
 
     public RegulatoryGraph(List<List<String>> var, List<List<String>> reg) {
         this.variables = new ArrayList<>();
@@ -26,6 +26,34 @@ public class RegulatoryGraph {
             formulas.add(list.get(1).toString());
             for (Variable v : variables) {
                 if (v.name.matches(list.get(2).toString())) outputs.add(v);
+            }
+        }
+
+        String[] formula;
+        String condition;
+        int index;
+        int number;
+        boolean varCondition = true;
+        for (int i = 0; i < this.multiplexes.size(); i++) {
+            formula = formulas.get(i).split("&");
+            for (int j = 0; j < formula.length; j++) {
+                condition = formula[j];
+                for (Variable v : variables) {
+                    if (condition.contains(v.name)) {
+                        index = condition.indexOf("=");
+                        number = Integer.parseInt(String.valueOf(condition.charAt(index + 1)));
+                        this.ev.add(new Trouple<Object, Integer, String>(v, number, this.multiplexes.get(i)));
+                        varCondition = false;
+                    }
+                }
+                if (!varCondition) {
+                    for (String m : this.multiplexes) {
+                        if (condition.contains(m)) {
+                            this.ev.add(new Trouple<Object, Integer, String>(m, 1, this.multiplexes.get(i)));
+                        }
+                    }
+                    varCondition = true;
+                }
             }
         }
 
