@@ -67,7 +67,12 @@ public class Main {
                 for (String m : omega_i) {
                     w1.add(takeElement(m, RG));
                 }
-
+            }
+            for (String m : RG.getMultiplexes()) {
+                if (!v.getBeta().contains(m)) omega1_i.add(m);
+            }
+            for (String m : omega1_i) {
+                w2.add(negate(m, RG));
             }
         }
     }
@@ -85,7 +90,7 @@ public class Main {
         return null;
     }
 
-    private static Pair<RegulatoryGraph.Variable, Integer> negate(String m, RegulatoryGraph RG) {
+    private static List<Pair<RegulatoryGraph.Variable, Integer>> negate(String m, RegulatoryGraph RG) {
         return null;
     }
 

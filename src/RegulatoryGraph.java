@@ -86,7 +86,6 @@ public class RegulatoryGraph {
         for (int i = 0; i < multiplexes.size(); i++) {
             em.add(new Pair<String, Object>(formulas.get(i), outputs.get(i)));
         }
-        this.ev = new ArrayList<>();
     }
 
     public List<Variable> getVariables() {
