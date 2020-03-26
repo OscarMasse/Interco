@@ -1,15 +1,27 @@
 package model.automata_network;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class LocalState {
-    public Map<LocalState, List<LocalState>> transitions;
-    public int i;
+    private List<Transition> transitions;
+    private int index;
+    private String automataName;
 
-    LocalState(int i) {
-        this.transitions = new HashMap<>();
-        this.i = i;
+    public List<Transition> getTransitions() {
+        return transitions;
+    }
+
+    public String getAutomataName() {
+        return automataName;
+    }
+
+    LocalState(int index) {
+        this.transitions = new ArrayList<>();
+        this.index = index;
+    }
+
+    public int getIndex() {
+        return this.index;
     }
 }

@@ -9,6 +9,18 @@ public class Automata {
     private int nStates;
     private List<LocalState> localStates;
 
+    public String getName() {
+        return name;
+    }
+
+    public int getnStates() {
+        return nStates;
+    }
+
+    public List<LocalState> getLocalStates() {
+        return localStates;
+    }
+
     public Automata(String name, int b_v) {
         this.name = name;
         this.nStates = b_v;
@@ -26,12 +38,8 @@ public class Automata {
         }
     }
 
-    public LocalState getLocalStates(int i) {
+    public LocalState getLocalState(int i) {
         return localStates.get(i);
     }
 
-    class Transition {
-        LocalState origin, destination;
-        List<LocalState> conditions;
-    }
 }
