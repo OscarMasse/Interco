@@ -23,9 +23,7 @@ public class Main {
         }
 
         // STEP 2
-        for (Automata automata : automatas) {
 
-        }
 
         // STEP 3
         List<Automata.LocalState> s0 = new ArrayList<>();
@@ -35,7 +33,28 @@ public class Main {
         }
 
         // STEP 4
-        List<List<String>> omega = new ArrayList<>();
+        for (RegulatoryGraph.Variable v : V) {
+            for (Pair couple : m.getEm()) {
+                if ((couple.getRight()) instanceof RegulatoryGraph.Variable) {
+                    RegulatoryGraph.Variable var = (RegulatoryGraph.Variable) (couple.getRight());
+                    if (var.getName().equals(v.getName())) {
+                        v.getBeta().add((String) couple.getLeft());
+                    }
+                }
+            }
+            v.getOmega().add(new ArrayList<String>());
+            int n = v.getBeta().size();
+            int N = (int) Math.pow(2d, Double.valueOf(n));
+            for (int i = 1; i < N; i++) {
+                String code = Integer.toBinaryString(N | i).substring(1);
+                ArrayList<String> temp = new ArrayList<>();
+                for (int j = 0; j < n; j++) {
+                    if (code.charAt(j) == '1') {
+                        temp.add(v.getBeta().get(j));
+                    }
+                }
+                v.getOmega().add(temp);
+            }
 
         // STEP 5
         List<Pair<Object, Integer>> w1 = new ArrayList<>();
@@ -48,6 +67,7 @@ public class Main {
 
         }
 
+        }
     }
 
     private static Pair<Object, Integer> takeElement(String m, List<String> M) {
