@@ -1,3 +1,10 @@
+import data_structures.Pair;
+import data_structures.Triplets;
+import model.automata_network.Automata;
+import model.automata_network.LocalState;
+import model.multiplexes.RegulatoryGraph;
+import model.multiplexes.Variable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -6,11 +13,11 @@ public class Translator {
 
     private Map<String, List<List<String>>> read;
     private RegulatoryGraph RG;
-    private List<RegulatoryGraph.Variable> V;
+    private List<Variable> V;
     private List<String> M;
 
     private List<Automata> automatas;
-    private List<Automata.LocalState> s0;
+    private List<LocalState> s0;
 
     public Translator(Map<String, List<List<String>>> read) {
         this.read = read;
@@ -32,8 +39,8 @@ public class Translator {
 
     private void step1() {
         automatas = new ArrayList<>();
-        for (RegulatoryGraph.Variable v : V) {
-            automatas.add(new Automata(v.name, v.b_v));
+        for (Variable v : V) {
+            automatas.add(new Automata(v.getName(), v.getB_v()));
         }
     }
 
@@ -50,10 +57,10 @@ public class Translator {
     }
 
     private void step4() {
-        for (RegulatoryGraph.Variable v : V) {
+        for (Variable v : V) {
             for (Pair couple : RG.getEm()) {
-                if ((couple.getRight()) instanceof RegulatoryGraph.Variable) {
-                    RegulatoryGraph.Variable var = (RegulatoryGraph.Variable) (couple.getRight());
+                if ((couple.getRight()) instanceof Variable) {
+                    Variable var = (Variable) (couple.getRight());
                     if (var.getName().equals(v.getName())) {
                         v.getBeta().add((String) couple.getLeft());
                     }
@@ -76,10 +83,10 @@ public class Translator {
     }
 
     private void step5() {
-        for (RegulatoryGraph.Variable v : V) {
+        for (Variable v : V) {
 
-            List<Pair<RegulatoryGraph.Variable, Integer>> w1 = new ArrayList<>();
-            List<List<Pair<RegulatoryGraph.Variable, Integer>>> w2 = new ArrayList<>();
+            List<Pair<Variable, Integer>> w1 = new ArrayList<>();
+            List<List<Pair<Variable, Integer>>> w2 = new ArrayList<>();
             List<String> omega1_i = new ArrayList<>();
             for (List<String> omega_i : v.getOmega()) {
                 for (String m : omega_i) {
@@ -101,20 +108,20 @@ public class Translator {
     private void step7() {
     }
 
-    private Pair<RegulatoryGraph.Variable, Integer> takeElement(String m) {
-        for (Trouple<Object, Integer, String> ev : RG.getEv()) {
+    private Pair<Variable, Integer> takeElement(String m) {
+        for (Triplets<Object, Integer, String> ev : RG.getEv()) {
             if (ev.getRight().equals(m)) {
                 if (RG.getMultiplexes().contains(ev.getLeft())) {
                     return (takeElement(ev.getLeft().toString()));
                 } else {
-                    return (new Pair<>((RegulatoryGraph.Variable) ev.getLeft(), ev.getMiddle()));
+                    return (new Pair<>((Variable) ev.getLeft(), ev.getMiddle()));
                 }
             }
         }
         return null;
     }
 
-    private List<Pair<RegulatoryGraph.Variable, Integer>> negate(String m) {
+    private List<Pair<Variable, Integer>> negate(String m) {
         return null;
     }
 }

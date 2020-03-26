@@ -1,7 +1,7 @@
+package model.automata_network;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Automata {
 
@@ -28,16 +28,6 @@ public class Automata {
 
     public LocalState getLocalStates(int i) {
         return localStates.get(i);
-    }
-
-    class LocalState {
-        public Map<LocalState, List<LocalState>> transitions;
-        public int i;
-
-        LocalState(int i) {
-            this.transitions = new HashMap<>();
-            this.i = i;
-        }
     }
 
     class Transition {

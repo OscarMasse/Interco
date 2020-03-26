@@ -1,3 +1,5 @@
+package data_structures;
+
 public class Pair<L, R> {
 
     private final L left;
@@ -26,8 +28,8 @@ public class Pair<L, R> {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Trouple)) return false;
-        Trouple pairo = (Trouple) o;
+        if (!(o instanceof Triplets)) return false;
+        Triplets pairo = (Triplets) o;
         return this.left.equals(pairo.getLeft()) &&
                 this.right.equals(pairo.getRight());
     }

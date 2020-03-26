@@ -1,10 +1,12 @@
-public class Trouple<L, M, R> {
+package data_structures;
+
+public class Triplets<L, M, R> {
 
     private final L left;
     private final M middle;
     private final R right;
 
-    public Trouple(L left, M middle, R right) {
+    public Triplets(L left, M middle, R right) {
         assert left != null;
         assert middle != null;
         assert right != null;
@@ -33,8 +35,8 @@ public class Trouple<L, M, R> {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Trouple)) return false;
-        Trouple t = (Trouple) o;
+        if (!(o instanceof Triplets)) return false;
+        Triplets t = (Triplets) o;
         return this.left.equals(t.getLeft()) &&
                 this.right.equals(t.getRight()) &&
                 this.middle.equals(t.getMiddle());

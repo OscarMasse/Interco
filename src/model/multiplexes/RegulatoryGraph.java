@@ -1,3 +1,8 @@
+package model.multiplexes;
+
+import data_structures.Pair;
+import data_structures.Triplets;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,9 +15,9 @@ public class RegulatoryGraph {
     private List<Variable> outputs;
 
     private List<Pair<String, Object>> em; // Multiplex, Output(Variable/Multiplex)
-    private List<Trouple<Object, Integer, String>> ev; // Input(Variable/Multiplex, State), Multiplex
+    private List<Triplets<Object, Integer, String>> ev; // Input(Variable/Multiplex, State), Multiplex
 
-    public List<Trouple<Object, Integer, String>> getEv() {
+    public List<Triplets<Object, Integer, String>> getEv() {
         return ev;
     }
 
@@ -51,14 +56,14 @@ public class RegulatoryGraph {
                     if (condition.contains(v.name)) {
                         index = condition.indexOf("=");
                         number = Integer.parseInt(String.valueOf(condition.charAt(index + 1)));
-                        this.ev.add(new Trouple<Object, Integer, String>(v, number, this.multiplexes.get(i)));
+                        this.ev.add(new Triplets<Object, Integer, String>(v, number, this.multiplexes.get(i)));
                         varCondition = false;
                     }
                 }
                 if (!varCondition) {
                     for (String m : this.multiplexes) {
                         if (condition.contains(m)) {
-                            this.ev.add(new Trouple<Object, Integer, String>(m, 1, this.multiplexes.get(i)));
+                            this.ev.add(new Triplets<Object, Integer, String>(m, 1, this.multiplexes.get(i)));
                         }
                     }
                     varCondition = true;
@@ -96,51 +101,4 @@ public class RegulatoryGraph {
         return multiplexes;
     }
 
-    class Variable {
-        String name;
-        int b_v;
-        List<List<String>> omega;
-        List<String> beta;
-
-        public List<List<String>> getOmega() {
-            return omega;
-        }
-
-        public List<String> getBeta() {
-            return beta;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public int getB_v() {
-            return b_v;
-        }
-
-        public List<Integer> getStates(int i) {
-            List<Integer> states = new ArrayList<>();
-            while (i <= this.b_v) {
-                states.add(i);
-                i++;
-            }
-            return states;
-        }
-
-        public List<Integer> getNegStates(int i) {
-            List<Integer> negStates = new ArrayList<>();
-            while (i > 0) {
-                negStates.add(i);
-                i--;
-            }
-            return negStates;
-        }
-
-        Variable(String name, int b_v) {
-            this.name = name;
-            this.b_v = b_v;
-            this.omega = new ArrayList<>();
-            this.beta = new ArrayList<>();
-        }
-    }
 }

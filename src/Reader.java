@@ -1,3 +1,5 @@
+import model.automata_network.Automata;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
