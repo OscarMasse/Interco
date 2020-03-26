@@ -60,19 +60,32 @@ public class Main {
         // STEP 5
         for (RegulatoryGraph.Variable v : V) {
 
-            List<Pair<Object, Integer>> w1 = new ArrayList<>();
-            List<List<Pair<Object, Integer>>> w2;
+            List<Pair<RegulatoryGraph.Variable, Integer>> w1 = new ArrayList<>();
+            List<List<Pair<RegulatoryGraph.Variable, Integer>>> w2 = new ArrayList<>();
             List<String> omega1_i = new ArrayList<>();
             for (List<String> omega_i : v.getOmega()) {
                 for (String m : omega_i) {
-                    w1.add(takeElement(m, M));
+                    w1.add(takeElement(m, RG));
                 }
 
             }
         }
     }
 
-    private static Pair<Object, Integer> takeElement(String m, List<String> M) {
+    private static Pair<RegulatoryGraph.Variable, Integer> takeElement(String m, RegulatoryGraph RG) {
+        for (Trouple<Object, Integer, String> ev : RG.getEv()) {
+            if (ev.getRight().equals(m)) {
+                if (RG.getMultiplexes().contains(ev.getLeft())) {
+                    return (takeElement(ev.getLeft().toString(), RG));
+                } else {
+                    return (new Pair<RegulatoryGraph.Variable, Integer>((RegulatoryGraph.Variable) ev.getLeft(), ev.getMiddle()));
+                }
+            }
+        }
+        return null;
+    }
+
+    private static Pair<RegulatoryGraph.Variable, Integer> negate(String m, RegulatoryGraph RG) {
         return null;
     }
 

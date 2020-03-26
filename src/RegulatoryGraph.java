@@ -12,6 +12,10 @@ public class RegulatoryGraph {
     private List<Pair<String, Object>> em; // Multiplex, Output(Variable/Multiplex)
     private List<Trouple<Object, Integer, String>> ev; // Input(Variable/Multiplex, State), Multiplex
 
+    public List<Trouple<Object, Integer, String>> getEv() {
+        return ev;
+    }
+
     public List<Pair<String, Object>> getEm() {
         return em;
     }
