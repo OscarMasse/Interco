@@ -14,7 +14,7 @@ public class Automata {
         this.nStates = b_v;
         this.localStates = new ArrayList<>();
         for (int i = 0; i < nStates; i++) {
-            localStates.add(new LocalState());
+            this.localStates.add(new LocalState(i));
         }
     }
 
@@ -22,15 +22,21 @@ public class Automata {
         this.nStates = nStates;
         this.localStates = new ArrayList<>();
         for (int i = 0; i < nStates; i++) {
-            this.localStates.add(new LocalState());
+            this.localStates.add(new LocalState(i));
         }
+    }
+
+    public LocalState getLocalStates(int i) {
+        return localStates.get(i);
     }
 
     class LocalState {
         public Map<LocalState, List<LocalState>> transitions;
+        public int i;
 
-        LocalState() {
+        LocalState(int i) {
             this.transitions = new HashMap<>();
+            this.i = i;
         }
     }
 

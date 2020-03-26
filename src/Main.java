@@ -28,7 +28,10 @@ public class Main {
 
         // STEP 3
         List<Automata.LocalState> s0 = new ArrayList<>();
-
+        // Automatas initialized at 0 because we don't have η0
+        for (Automata automata : automatas) {
+            s0.add(automata.getLocalStates(0));
+        }
 
         // STEP 4
         List<List<String>> omega = new ArrayList<>();
