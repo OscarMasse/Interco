@@ -86,6 +86,7 @@ public class RegulatoryGraph {
 
     class Variable {
         String name;
+        int b_v;
 
         public String getName() {
             return name;
@@ -95,7 +96,13 @@ public class RegulatoryGraph {
             return b_v;
         }
 
-        int b_v;
+        public List<Integer> getStates(int i) {
+            return null;
+        }
+
+        public List<Integer> getNegStates(int i) {
+            return null;
+        }
 
         Variable(String name, int b_v) {
             this.name = name;
