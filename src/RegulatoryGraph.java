@@ -33,6 +33,7 @@ public class RegulatoryGraph {
             }
         }
 
+        this.ev = new ArrayList<>();
         String[] formula;
         String condition;
         int index;
