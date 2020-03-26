@@ -34,7 +34,7 @@ public class Main {
 
         // STEP 4
         for (RegulatoryGraph.Variable v : V) {
-            for (Pair couple : m.getEm()) {
+            for (Pair couple : RG.getEm()) {
                 if ((couple.getRight()) instanceof RegulatoryGraph.Variable) {
                     RegulatoryGraph.Variable var = (RegulatoryGraph.Variable) (couple.getRight());
                     if (var.getName().equals(v.getName())) {
@@ -55,18 +55,20 @@ public class Main {
                 }
                 v.getOmega().add(temp);
             }
-
-        // STEP 5
-        List<Pair<Object, Integer>> w1 = new ArrayList<>();
-        List<List<Pair<Object, Integer>>> w2;
-        List<String> omega1_i = new ArrayList<>();
-        for (List<String> omega_i : omega) {
-            for (String m : omega_i) {
-                w1.add(takeElement(m, M));
-            }
-
         }
 
+        // STEP 5
+        for (RegulatoryGraph.Variable v : V) {
+
+            List<Pair<Object, Integer>> w1 = new ArrayList<>();
+            List<List<Pair<Object, Integer>>> w2;
+            List<String> omega1_i = new ArrayList<>();
+            for (List<String> omega_i : v.getOmega()) {
+                for (String m : omega_i) {
+                    w1.add(takeElement(m, M));
+                }
+
+            }
         }
     }
 
