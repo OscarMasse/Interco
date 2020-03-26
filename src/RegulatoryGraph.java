@@ -97,11 +97,21 @@ public class RegulatoryGraph {
         }
 
         public List<Integer> getStates(int i) {
-            return null;
+            List<Integer> states = new ArrayList<>();
+            while (i <= this.b_v) {
+                states.add(i);
+                i++;
+            }
+            return states;
         }
 
         public List<Integer> getNegStates(int i) {
-            return null;
+            List<Integer> negStates = new ArrayList<>();
+            while (i > 0) {
+                negStates.add(i);
+                i--;
+            }
+            return negStates;
         }
 
         Variable(String name, int b_v) {
