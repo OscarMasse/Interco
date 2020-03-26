@@ -8,16 +8,14 @@ public class Automata {
     private String name;
     private int nStates;
     private List<LocalState> localStates;
-    private List<String> var;
 
-    public Automata(List<String> var) {
-        this.var = var;
-    }
-
-    public Automata(String name, int nStates) {
+    public Automata(String name, int b_v) {
         this.name = name;
-        this.nStates = nStates;
+        this.nStates = b_v;
         this.localStates = new ArrayList<>();
+        for (int i = 0; i < nStates; i++) {
+            localStates.add(new LocalState());
+        }
     }
 
     public Automata(int nStates) {

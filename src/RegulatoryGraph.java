@@ -9,7 +9,7 @@ public class RegulatoryGraph {
     private List<List<Variable>> inputs;
     private List<Variable> outputs;
 
-    private List<Pair<String, Variable>> em; // Multiplexes + Output
+    private List<Pair<String, Object>> em; // Multiplexes + Output
     private List<Trouple<Object, Integer, String>> ev; // Multiplexes + Inputs
 
     public RegulatoryGraph(List<List<String>> var, List<List<String>> reg) {
@@ -73,7 +73,11 @@ public class RegulatoryGraph {
             if (!input.isEmpty()) inputs.add(input);
             else System.out.println("NO INPUT FOUND IN THIS FORMULA" + s);
         }
-
+        this.em = new ArrayList<>();
+        for (int i = 0; i < multiplexes.size(); i++) {
+            em.add(new Pair<String, Object>(formulas.get(i), outputs.get(i)));
+        }
+        this.ev = new ArrayList<>();
     }
 
     public List<Variable> getVariables() {
