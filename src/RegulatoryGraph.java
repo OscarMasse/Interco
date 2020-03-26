@@ -9,8 +9,8 @@ public class RegulatoryGraph {
     private List<List<Variable>> inputs;
     private List<Variable> outputs;
 
-    private List<Pair<String, Object>> em; // Multiplexes + Output
-    private List<Trouple<Object, Integer, String>> ev; // Multiplexes + Inputs
+    private List<Pair<String, Object>> em; // Multiplex, Output(Variable/Multiplex)
+    private List<Trouple<Object, Integer, String>> ev; // Input(Variable/Multiplex, State), Multiplex
 
     public RegulatoryGraph(List<List<String>> var, List<List<String>> reg) {
         this.variables = new ArrayList<>();
@@ -82,6 +82,10 @@ public class RegulatoryGraph {
 
     public List<Variable> getVariables() {
         return variables;
+    }
+
+    public List<String> getMultiplexes() {
+        return multiplexes;
     }
 
     class Variable {

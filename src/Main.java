@@ -10,9 +10,10 @@ public class Main {
         smb.display();
 
         Map<String, List<List<String>>> readSMB = smb.getRead();
-        RegulatoryGraph m = new RegulatoryGraph(readSMB.get("VAR"), readSMB.get("REG"));
+        RegulatoryGraph RG = new RegulatoryGraph(readSMB.get("VAR"), readSMB.get("REG"));
 
-        List<RegulatoryGraph.Variable> V = m.getVariables();
+        List<RegulatoryGraph.Variable> V = RG.getVariables();
+        List<String> M = RG.getMultiplexes();
 
         // STEP 1
         List<Automata> automatas = new ArrayList<>();
@@ -36,5 +37,21 @@ public class Main {
         // STEP 4
         List<List<String>> omega = new ArrayList<>();
 
+        // STEP 5
+        List<Pair<Object, Integer>> w1 = new ArrayList<>();
+        List<List<Pair<Object, Integer>>> w2;
+        List<String> omega1_i = new ArrayList<>();
+        for (List<String> omega_i : omega) {
+            for (String m : omega_i) {
+                w1.add(takeElement(m, M));
+            }
+
+        }
+
     }
+
+    private static Pair<Object, Integer> takeElement(String m, List<String> M) {
+        return null;
+    }
+
 }
