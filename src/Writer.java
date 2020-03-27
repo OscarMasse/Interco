@@ -15,13 +15,14 @@ public class Writer {
     private String path;
     private File file;
 
-    Writer(String path) {
+    Writer(String path, List<Automata> model) {
         this.path = path;
         this.file = new File(path);
+        this.model = model;
     }
 
     public void write() throws IOException {
-        BufferedWriter an = new BufferedWriter(new FileWriter(this.path, true));
+        BufferedWriter an = new BufferedWriter(new FileWriter(this.path, false));
         writeVAR(an);
         an.write("\n");
         an.write("\n");
@@ -39,12 +40,12 @@ public class Writer {
         for (Automata a : this.model) {
             for (LocalState localState : a.getLocalStates()) {
                 for (Transition transition : localState.getTransitions()) {
-                    String transi = "\"" + a.getName() + "\"" + localState.getIndex() + " -> "
+                    String transi = "\"" + a.getName() + "\" " + localState.getIndex() + " -> "
                             + transition.getDestination().getIndex() + " when ";
                     for (LocalState condition : transition.getConditions()) {
-                        transi = transi + condition.getAutomataName() + "=" + condition.getIndex() + " and ";
+                        transi = transi + "\"" + condition.getAutomataName() + "\"=" + condition.getIndex() + " and ";
                     }
-                    transi.substring(0, transi.length() - 5);
+                    transi = transi.substring(0, transi.length() - 5);
                     an.write(transi + "\n");
                 }
             }
