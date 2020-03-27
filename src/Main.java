@@ -21,16 +21,28 @@ public class Main {
         AutomataNetwork network = new AutomataNetwork();
         Automata a = new Automata("a", 1);
         Automata b = new Automata("b", 2);
+        Automata c = new Automata("c", 2);
         network.addAutomata(a);
         network.addAutomata(b);
-        // Condition : b 0 -> 2 when a=1
+        network.addAutomata(c);
+        // Condition : b 0 -> 2 when a=1 and c=2
+        // Condition : c 1 -> 0 when b=1 and a=0
         List<LocalState> conditionb02 = new ArrayList<>();
         conditionb02.add(a.getLocalState(1));
-
-        List<Transition> transitionsb = new ArrayList<>();
+        conditionb02.add(c.getLocalState(2));
+        List<LocalState> conditionc10 = new ArrayList<>();
+        conditionc10.add(a.getLocalState(0));
+        conditionc10.add(b.getLocalState(1));
+        // Transition b
+        List<Transition> transitionsb0 = new ArrayList<>();
         Transition b02 = new Transition(b.getLocalState(0), b.getLocalState(2), conditionb02);
-        transitionsb.add(b02);
-        b.getLocalState(0).setTransitions(transitionsb);
+        transitionsb0.add(b02);
+        b.getLocalState(0).setTransitions(transitionsb0);
+        // Transition c
+        List<Transition> transitionsc1 = new ArrayList<>();
+        Transition c10 = new Transition(c.getLocalState(1), b.getLocalState(0), conditionc10);
+        transitionsc1.add(c10);
+        c.getLocalState(1).setTransitions(transitionsc1);
 
         Writer an = new Writer("test.an", network);
         an.write();
