@@ -23,7 +23,7 @@ public class RegulatoryGraph {
         for (List list : reg) {
             Multiplex m = new Multiplex(list.get(0).toString(), list.get(1).toString());
             for (Variable v : variables) {
-                if (v.name.matches(list.get(2).toString())) m.setOutput(v);
+                if (v.getName().matches(list.get(2).toString())) m.setOutput(v);
             }
             multiplexes.add(m);
         }
@@ -39,7 +39,7 @@ public class RegulatoryGraph {
             for (int j = 0; j < formula.length; j++) {
                 condition = formula[j];
                 for (Variable v : variables) {
-                    if (condition.contains(v.name)) {
+                    if (condition.contains(v.getName())) {
                         index = condition.indexOf("=");
                         number = Integer.parseInt(String.valueOf(condition.charAt(index + 1)));
                         // We can not know if state is negated, yet

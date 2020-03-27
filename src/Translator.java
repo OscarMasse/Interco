@@ -7,7 +7,6 @@ import model.multiplexes.State;
 import model.multiplexes.Variable;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,7 +20,8 @@ public class Translator {
     private List<Automata> automatas;
     private List<LocalState> s0;
 
-    private Map<Integer, List<Multiplex>> f;
+    private List<List<List<State>>> F;
+    private List<List<List<List<State>>>> lw;
 
     public Translator(Map<String, List<List<String>>> read) {
         this.read = read;
@@ -52,6 +52,92 @@ public class Translator {
         // Done in step1
     }
 
+    private void step3() {
+        s0 = new ArrayList<>();
+        // Automatas initialized at 0 because we don't have η0
+        for (Automata automata : automatas) {
+            s0.add(automata.getLocalState(0));
+        }
+    }
+
+    private void step4() {
+        for (Variable v : V) {
+            for (Pair<Multiplex, Variable> couple : RG.getEm()) {
+                Variable var = couple.getRight();
+                if (var.getName().equals(v.getName())) {
+                    v.getBeta().add(couple.getLeft());
+                }
+            }
+            v.getOmega().add(new ArrayList<>());
+            int n = v.getBeta().size();
+            int N = (int) Math.pow(2d, Double.valueOf(n));
+            for (int i = 1; i < N; i++) {
+                String code = Integer.toBinaryString(N | i).substring(1);
+                ArrayList<Multiplex> temp = new ArrayList<>();
+                for (int j = 0; j < n; j++) {
+                    if (code.charAt(j) == '1') {
+                        temp.add(v.getBeta().get(j));
+                    }
+                }
+                v.getOmega().add(temp);
+            }
+        }
+    }
+
+    private void step5() {
+        List<List<State>> f;
+        this.F = new ArrayList<>();
+        for (Variable v : V) {
+            List<State> w1 = new ArrayList<>();
+            List<List<State>> w2 = new ArrayList<>();
+            List<Multiplex> omega1_i = new ArrayList<>();
+            for (List<Multiplex> omega_i : v.getOmega()) {
+                for (Multiplex m : omega_i) {
+                    // w1.add(takeElement(m));
+                    for (State state : m.getInputs()) {
+                        w1.add(state);
+                    }
+                }
+            }
+            for (Multiplex m : RG.getMultiplexes()) {
+                if (!v.getBeta().contains(m)) omega1_i.add(m);
+            }
+            for (Multiplex m : omega1_i) {
+                w2.add(negate(m));
+            }
+
+            List<List<State>> ec = cartesianProduct(w2);
+
+            f = new ArrayList<>();
+            if (ec != null) {
+                for (List<State> g : ec) {
+                    List<State> union = new ArrayList<>(w1);
+                    union.addAll(g);
+                    f.add(union);
+                }
+            }
+            this.F.add(f);
+        }
+    }
+
+    private void step6() {
+        for (List<List<State>> f : this.F) {
+            this.lw = new ArrayList();
+            for (List<State> states : f) {
+                List<List<State>> varEtats = new ArrayList<>();
+                for (State state : states) {
+                    varEtats.add(state.represents());
+                }
+                this.lw.add(cartesianProduct2(varEtats));
+            }
+        }
+    }
+
+    private void step7() {
+        // TODO
+    }
+
+
     public static List<List<State>> cartesianProduct(List<?>... lists) {
         if (lists.length < 2) {
             System.out.println("Can't have a product of fewer than two sets (got " +
@@ -80,81 +166,40 @@ public class Translator {
         return ret;
     }
 
-    private void step3() {
-        s0 = new ArrayList<>();
-        // Automatas initialized at 0 because we don't have η0
-        for (Automata automata : automatas) {
-            s0.add(automata.getLocalState(0));
+    public static List<List<List<State>>> cartesianProduct2(List<?>... lists) {
+        if (lists.length < 2) {
+            System.out.println("Can't have a product of fewer than two sets (got " +
+                    lists.length + ")");
+            return null;
         }
+//            throw new IllegalArgumentException(
+//                    "Can't have a product of fewer than two sets (got " +
+//                            lists.length + ")");
+
+        return _cartesianProduct2(0, lists);
     }
 
-    private void step6() {
+    private static List<List<List<State>>> _cartesianProduct2(int index, List<?>... lists) {
+        List<List<List<State>>> ret = new ArrayList<>();
+        if (index == lists.length) {
+            ret.add(new ArrayList<>());
+        } else {
+            for (Object obj : lists[index]) {
+                for (List<List<State>> list : _cartesianProduct2(index + 1, lists)) {
+                    list.add((List<State>) obj);
+                    ret.add(list);
+                }
+            }
+        }
+        return ret;
     }
 
-    private void step7() {
-    }
     // When we will consider that multiplex output/inputs can be multiplexes:
 /*
     private State takeElement(Multiplex m) {
         return null;
     }
 */
-
-    private void step4() {
-        for (Variable v : V) {
-            for (Pair<Multiplex, Variable> couple : RG.getEm()) {
-                Variable var = couple.getRight();
-                if (var.getName().equals(v.getName())) {
-                    v.getBeta().add(couple.getLeft());
-                }
-            }
-            v.getOmega().add(new ArrayList<>());
-            int n = v.getBeta().size();
-            int N = (int) Math.pow(2d, Double.valueOf(n));
-            for (int i = 1; i < N; i++) {
-                String code = Integer.toBinaryString(N | i).substring(1);
-                ArrayList<Multiplex> temp = new ArrayList<>();
-                for (int j = 0; j < n; j++) {
-                    if (code.charAt(j) == '1') {
-                        temp.add(v.getBeta().get(j));
-                    }
-                }
-                v.getOmega().add(temp);
-            }
-        }
-    }
-
-    private void step5() {
-        for (Variable v : V) {
-            List<State> w1 = new ArrayList<>();
-            List<List<State>> w2 = new ArrayList<>();
-            List<Multiplex> omega1_i = new ArrayList<>();
-            for (List<Multiplex> omega_i : v.getOmega()) {
-                for (Multiplex m : omega_i) {
-                    // w1.add(takeElement(m));
-                    for (State state : m.getInputs()) {
-                        w1.add(state);
-                    }
-                }
-            }
-            for (Multiplex m : RG.getMultiplexes()) {
-                if (!v.getBeta().contains(m)) omega1_i.add(m);
-            }
-            for (Multiplex m : omega1_i) {
-                w2.add(negate(m));
-            }
-
-            List<List<State>> ec = cartesianProduct(w2);
-
-            this.f = new HashMap<>();
-            if (ec != null) {
-                for (List<State> g : ec) {
-                    // TODO
-                }
-            }
-
-        }
-    }
 
     private List<State> negate(Multiplex m) {
         List<State> list = new ArrayList<>();

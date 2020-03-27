@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Variable {
-    String name;
-    int b_v;
-    List<State> states;
-    List<State> negativeStates;
-    List<List<Multiplex>> omega;
-    List<Multiplex> beta;
+    private String name;
+    private int b_v;
+    private List<State> states;
+    private List<State> negativeStates;
+    private List<List<Multiplex>> omega;
+    private List<Multiplex> beta;
 
-    Variable(String name, int b_v) {
+    public Variable(String name, int b_v) {
         this.name = name;
         this.b_v = b_v;
         this.omega = new ArrayList<>();
@@ -42,24 +42,6 @@ public class Variable {
 
     public int getB_v() {
         return b_v;
-    }
-
-    public List<Integer> getStates(int i) {
-        List<Integer> states = new ArrayList<>();
-        while (i <= this.b_v) {
-            states.add(i);
-            i++;
-        }
-        return states;
-    }
-
-    public List<Integer> getNegStates(int i) {
-        List<Integer> negStates = new ArrayList<>();
-        while (i > 0) {
-            negStates.add(i);
-            i--;
-        }
-        return negStates;
     }
 
     public State getState(int index) {

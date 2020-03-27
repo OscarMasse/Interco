@@ -13,35 +13,6 @@ public class Reader {
 
     private String path;
     private File file;
-
-    public Map<String, List<List<String>>> getRead() {
-        return readSMB;
-    }
-
-    private enum KeyWords {
-        VAR("VAR"),
-        REG("REG"),
-        PARA("PARA"),
-        CTL("CTL"),
-        FAIRCTL("FAIRCTL"),
-        HOARE("HOARE"),
-        PRE("PRE"),
-        TRACE("TRACE"),
-        POST("POST"),
-        END("END");
-
-        private String keyWord;
-
-        KeyWords(final String keyWord) {
-            this.keyWord = keyWord;
-        }
-
-        @Override
-        public String toString() {
-            return keyWord;
-        }
-    }
-
     private Map<String, List<List<String>>> readSMB;
 
     Reader(String path) {
@@ -50,10 +21,14 @@ public class Reader {
         this.readSMB = new HashMap<>();
     }
 
+    public Map<String, List<List<String>>> getRead() {
+        return readSMB;
+    }
+
     public void read() throws IOException {
         BufferedReader smb = new BufferedReader(new FileReader(this.path));
         String line = smb.readLine();
-        while (line != null){
+        while (line != null) {
             line = discardComments(line);
             if (line.contains("VAR")) {
                 line = smb.readLine();
@@ -203,5 +178,29 @@ public class Reader {
 
     void createOmega(Automata automata, List<List<Integer>> Em) {
 
+    }
+
+    private enum KeyWords {
+        VAR("VAR"),
+        REG("REG"),
+        PARA("PARA"),
+        CTL("CTL"),
+        FAIRCTL("FAIRCTL"),
+        HOARE("HOARE"),
+        PRE("PRE"),
+        TRACE("TRACE"),
+        POST("POST"),
+        END("END");
+
+        private String keyWord;
+
+        KeyWords(final String keyWord) {
+            this.keyWord = keyWord;
+        }
+
+        @Override
+        public String toString() {
+            return keyWord;
+        }
     }
 }
