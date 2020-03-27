@@ -1,4 +1,5 @@
 import model.automata_network.Automata;
+import model.automata_network.AutomataNetwork;
 import model.automata_network.LocalState;
 import model.automata_network.Transition;
 
@@ -17,11 +18,11 @@ public class Main {
 
 
         //Example to test writer
-        List<Automata> model = new ArrayList<>();
+        AutomataNetwork network = new AutomataNetwork();
         Automata a = new Automata("a", 1);
         Automata b = new Automata("b", 2);
-        model.add(a);
-        model.add(b);
+        network.addAutomata(a);
+        network.addAutomata(b);
 
         List<LocalState> conditionb02 = new ArrayList<>();
         conditionb02.add(a.getLocalState(1));
@@ -31,7 +32,7 @@ public class Main {
         transitionsb.add(b02);
         b.getLocalState(0).setTransitions(transitionsb);
 
-        Writer an = new Writer("test.an", model);
+        Writer an = new Writer("test.an", network);
         an.write();
     }
 }

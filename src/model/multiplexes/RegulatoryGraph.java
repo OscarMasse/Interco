@@ -44,6 +44,7 @@ public class RegulatoryGraph {
                         number = Integer.parseInt(String.valueOf(condition.charAt(index + 1)));
                         // We can not know if state is negated, yet
                         this.ev.add(new Pair<>(v.getState(number), multiplex));
+                        multiplex.addInput(v.getState(number));
                         varCondition = false;
                     }
                 }
@@ -66,6 +67,7 @@ public class RegulatoryGraph {
             em.add(new Pair<>(multiplex, multiplex.getOuput()));
         }
     }
+
 
     public List<Pair<State, Multiplex>> getEv() {
         return ev;

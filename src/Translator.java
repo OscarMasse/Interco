@@ -53,10 +53,14 @@ public class Translator {
     }
 
     public static List<List<State>> cartesianProduct(List<?>... lists) {
-        if (lists.length < 2)
-            throw new IllegalArgumentException(
-                    "Can't have a product of fewer than two sets (got " +
-                            lists.length + ")");
+        if (lists.length < 2) {
+            System.out.println("Can't have a product of fewer than two sets (got " +
+                    lists.length + ")");
+            return null;
+        }
+//            throw new IllegalArgumentException(
+//                    "Can't have a product of fewer than two sets (got " +
+//                            lists.length + ")");
 
         return _cartesianProduct(0, lists);
     }
@@ -143,8 +147,10 @@ public class Translator {
             List<List<State>> ec = cartesianProduct(w2);
 
             this.f = new HashMap<>();
-            for (List<State> g : ec) {
-
+            if (ec != null) {
+                for (List<State> g : ec) {
+                    // TODO
+                }
             }
 
         }

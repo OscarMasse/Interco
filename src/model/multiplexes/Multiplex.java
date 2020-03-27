@@ -1,5 +1,6 @@
 package model.multiplexes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Multiplex {
@@ -20,6 +21,8 @@ public class Multiplex {
     public Multiplex(String name, String formula) {
         this.name = name;
         this.formula = formula;
+        this.inputs = new ArrayList<>();
+        this.negative = false;
     }
 
     public void setOutput(Variable output) {
@@ -40,5 +43,9 @@ public class Multiplex {
 
     public List<State> getInputs() {
         return this.inputs;
+    }
+
+    public void addInput(State input) {
+        this.inputs.add(input);
     }
 }

@@ -1,4 +1,5 @@
 import model.automata_network.Automata;
+import model.automata_network.AutomataNetwork;
 import model.automata_network.LocalState;
 import model.automata_network.Transition;
 
@@ -6,19 +7,18 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.List;
 
 
 public class Writer {
 
-    private List<Automata> model;
+    private AutomataNetwork network;
     private String path;
     private File file;
 
-    Writer(String path, List<Automata> model) {
+    Writer(String path, AutomataNetwork network) {
         this.path = path;
         this.file = new File(path);
-        this.model = model;
+        this.network = network;
     }
 
     public void write() throws IOException {
@@ -31,13 +31,13 @@ public class Writer {
     }
 
     public void writeVAR(BufferedWriter an) throws IOException {
-        for (Automata a : this.model) {
+        for (Automata a : this.network.getAutomatas()) {
             an.write("\"" + a.getName() + "\" [0," + a.getnStates() + "]\n");
         }
     }
 
     public void writeTRANSI(BufferedWriter an) throws IOException {
-        for (Automata a : this.model) {
+        for (Automata a : this.network.getAutomatas()) {
             for (LocalState localState : a.getLocalStates()) {
                 for (Transition transition : localState.getTransitions()) {
                     String transi = "\"" + a.getName() + "\" " + localState.getIndex() + " -> "
