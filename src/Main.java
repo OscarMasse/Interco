@@ -23,7 +23,7 @@ public class Main {
         Automata b = new Automata("b", 2);
         network.addAutomata(a);
         network.addAutomata(b);
-
+        // Condition : b 0 -> 2 when a=1
         List<LocalState> conditionb02 = new ArrayList<>();
         conditionb02.add(a.getLocalState(1));
 
