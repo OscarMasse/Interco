@@ -30,6 +30,7 @@ public class Writer {
         an.close();
     }
 
+    //VAR format : "var" [0,b_v]
     public void writeVAR(BufferedWriter an) throws IOException {
         for (Automata a : this.network.getAutomatas()) {
             an.write("\"" + a.getName() + "\" [0," + a.getnStates() + "]\n");
