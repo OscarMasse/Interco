@@ -1,11 +1,13 @@
 import data_structures.Pair;
-import data_structures.Triplets;
 import model.automata_network.Automata;
 import model.automata_network.LocalState;
+import model.multiplexes.Multiplex;
 import model.multiplexes.RegulatoryGraph;
+import model.multiplexes.State;
 import model.multiplexes.Variable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,10 +16,12 @@ public class Translator {
     private Map<String, List<List<String>>> read;
     private RegulatoryGraph RG;
     private List<Variable> V;
-    private List<String> M;
+    private List<Multiplex> M;
 
     private List<Automata> automatas;
     private List<LocalState> s0;
+
+    private Map<Integer, List<Multiplex>> f;
 
     public Translator(Map<String, List<List<String>>> read) {
         this.read = read;
@@ -48,30 +52,64 @@ public class Translator {
         // Done in step1
     }
 
+    public static List<List<State>> cartesianProduct(List<?>... lists) {
+        if (lists.length < 2)
+            throw new IllegalArgumentException(
+                    "Can't have a product of fewer than two sets (got " +
+                            lists.length + ")");
+
+        return _cartesianProduct(0, lists);
+    }
+
+    private static List<List<State>> _cartesianProduct(int index, List<?>... lists) {
+        List<List<State>> ret = new ArrayList<>();
+        if (index == lists.length) {
+            ret.add(new ArrayList<>());
+        } else {
+            for (Object obj : lists[index]) {
+                for (List<State> list : _cartesianProduct(index + 1, lists)) {
+                    list.add((State) obj);
+                    ret.add(list);
+                }
+            }
+        }
+        return ret;
+    }
+
     private void step3() {
         s0 = new ArrayList<>();
         // Automatas initialized at 0 because we don't have η0
         for (Automata automata : automatas) {
-            s0.add(automata.getLocalStates(0));
+            s0.add(automata.getLocalState(0));
         }
     }
 
+    private void step6() {
+    }
+
+    private void step7() {
+    }
+    // When we will consider that multiplex output/inputs can be multiplexes:
+/*
+    private State takeElement(Multiplex m) {
+        return null;
+    }
+*/
+
     private void step4() {
         for (Variable v : V) {
-            for (Pair couple : RG.getEm()) {
-                if ((couple.getRight()) instanceof Variable) {
-                    Variable var = (Variable) (couple.getRight());
-                    if (var.getName().equals(v.getName())) {
-                        v.getBeta().add((String) couple.getLeft());
-                    }
+            for (Pair<Multiplex, Variable> couple : RG.getEm()) {
+                Variable var = couple.getRight();
+                if (var.getName().equals(v.getName())) {
+                    v.getBeta().add(couple.getLeft());
                 }
             }
-            v.getOmega().add(new ArrayList<String>());
+            v.getOmega().add(new ArrayList<>());
             int n = v.getBeta().size();
             int N = (int) Math.pow(2d, Double.valueOf(n));
             for (int i = 1; i < N; i++) {
                 String code = Integer.toBinaryString(N | i).substring(1);
-                ArrayList<String> temp = new ArrayList<>();
+                ArrayList<Multiplex> temp = new ArrayList<>();
                 for (int j = 0; j < n; j++) {
                     if (code.charAt(j) == '1') {
                         temp.add(v.getBeta().get(j));
@@ -84,44 +122,42 @@ public class Translator {
 
     private void step5() {
         for (Variable v : V) {
-
-            List<Pair<Variable, Integer>> w1 = new ArrayList<>();
-            List<List<Pair<Variable, Integer>>> w2 = new ArrayList<>();
-            List<String> omega1_i = new ArrayList<>();
-            for (List<String> omega_i : v.getOmega()) {
-                for (String m : omega_i) {
-                    w1.add(takeElement(m));
+            List<State> w1 = new ArrayList<>();
+            List<List<State>> w2 = new ArrayList<>();
+            List<Multiplex> omega1_i = new ArrayList<>();
+            for (List<Multiplex> omega_i : v.getOmega()) {
+                for (Multiplex m : omega_i) {
+                    // w1.add(takeElement(m));
+                    for (State state : m.getInputs()) {
+                        w1.add(state);
+                    }
                 }
             }
-            for (String m : RG.getMultiplexes()) {
+            for (Multiplex m : RG.getMultiplexes()) {
                 if (!v.getBeta().contains(m)) omega1_i.add(m);
             }
-            for (String m : omega1_i) {
+            for (Multiplex m : omega1_i) {
                 w2.add(negate(m));
             }
+
+            List<List<State>> ec = cartesianProduct(w2);
+
+            this.f = new HashMap<>();
+            for (List<State> g : ec) {
+
+            }
+
         }
     }
 
-    private void step6() {
-    }
-
-    private void step7() {
-    }
-
-    private Pair<Variable, Integer> takeElement(String m) {
-        for (Triplets<Object, Integer, String> ev : RG.getEv()) {
-            if (ev.getRight().equals(m)) {
-                if (RG.getMultiplexes().contains(ev.getLeft())) {
-                    return (takeElement(ev.getLeft().toString()));
-                } else {
-                    return (new Pair<>((Variable) ev.getLeft(), ev.getMiddle()));
-                }
+    private List<State> negate(Multiplex m) {
+        List<State> list = new ArrayList<>();
+        for (State state : m.getInputs()) {
+            for (Variable variable : this.V) {
+                if (state.getVariable().equals(variable))
+                    list.add(variable.getNegativeState(state.getIndex()));
             }
         }
-        return null;
-    }
-
-    private List<Pair<Variable, Integer>> negate(String m) {
-        return null;
+        return list;
     }
 }

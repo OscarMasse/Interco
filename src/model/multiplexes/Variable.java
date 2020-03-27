@@ -6,14 +6,33 @@ import java.util.List;
 public class Variable {
     String name;
     int b_v;
-    List<List<String>> omega;
-    List<String> beta;
+    List<State> states;
+    List<State> negativeStates;
+    List<List<Multiplex>> omega;
+    List<Multiplex> beta;
 
-    public List<List<String>> getOmega() {
+    Variable(String name, int b_v) {
+        this.name = name;
+        this.b_v = b_v;
+        this.omega = new ArrayList<>();
+        this.beta = new ArrayList<>();
+        this.states = new ArrayList<>();
+        this.negativeStates = new ArrayList<>();
+        for (int i = 0; i <= b_v; i++) {
+            new State(this, i, false);
+            new State(this, i, true);
+        }
+    }
+
+    public List<State> getNegativeStates() {
+        return negativeStates;
+    }
+
+    public List<List<Multiplex>> getOmega() {
         return omega;
     }
 
-    public List<String> getBeta() {
+    public List<Multiplex> getBeta() {
         return beta;
     }
 
@@ -43,10 +62,19 @@ public class Variable {
         return negStates;
     }
 
-    Variable(String name, int b_v) {
-        this.name = name;
-        this.b_v = b_v;
-        this.omega = new ArrayList<>();
-        this.beta = new ArrayList<>();
+    public State getState(int index) {
+        return this.states.get(index);
+    }
+
+    public State getNegativeState(int index) {
+        return this.negativeStates.get(index);
+    }
+
+    public void addState(State state) {
+        this.states.add(state);
+    }
+
+    public void addNegativeState(State state) {
+        this.negativeStates.add(state);
     }
 }
